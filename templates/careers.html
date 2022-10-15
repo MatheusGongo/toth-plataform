@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+
+<html lang="pt-br">
+
+    <head>
+        <title>Thoth - Educação a Distância</title>
+        <meta charset="utf-8">
+        <meta name="author" content="Matheus Gongo">
+        <meta name="description" content="Site de produtos de beleza">
+        <meta name="keywords" content="">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
+        <link rel="stylesheet" href="app.css">
+        <script src="js/app.js" type="text/javascript"></script>
+    </head>
+
+    <body>
+
+    <div x-data="getData()" x-init="checkCookie()" class="bg-no-repeat bg-cover bg-center relative" style="background-image: url(https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80);"><div class="absolute bg-gradient-to-b from-stone-800 to-stone-900 opacity-75 inset-0 z-0"></div>
+    <div x-show="showAlert" class="block text-sm text-red-600 bg-red-200 border border-red-400 h-12 mt-10 flex items-center p-4 rounded-sm relative">
+        <strong class="mr-1">Usuário não encontrado!</strong> Por favor, verifique os campos abaixo.
+        <button type="button" @click="showAlert = false">
+            <span class="absolute top-0 bottom-0 right-0 text-2xl px-3 py-1 hover:text-red-900"" >×</span>
+        </button>
+      </div>    
+    <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
+            <div class="flex-col flex  self-center p-10 sm:max-w-5xl xl:max-w-2xl  z-10">
+            <div class="self-start hidden lg:flex flex-col  text-white">
+                <img src="" class="mb-3">
+                <h1 class="mb-3 font-bold text-5xl">Olá 👋, bem vindo ao Thoth </h1>
+                <p class="pr-3">Lorem ipsum is placeholder text commonly used in the graphic, print,
+                and publishing industries for previewing layouts and visual mockups</p>
+            </div>
+            </div>
+            <div class="flex justify-center self-center  z-10">
+                <div class="p-12 bg-white mx-auto rounded-2xl w-100 ">
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-2xl text-gray-800">Login </h3>
+                        <p class="text-gray-500">Por favor, entre com a sua conta.</p>
+                    </div>
+                    <form name="form" >
+                        <div class="space-y-5">
+                            <div class="space-y-2">
+                                <label class="text-sm font-medium text-gray-700 tracking-wide">Email</label>
+                                <input x-model="login_email" id="login_email" class=" w-full text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400" type="email" name="email" placeholder="mail@gmail.com" required>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="mb-5 text-sm font-medium text-gray-700 tracking-wide">
+                                Senha
+                                </label>
+                                <input x-model="login_pass" id="password" class="w-full content-center text-base px-4 py-2 border  border-gray-300 rounded-lg focus:outline-none focus:border-blue-400" type="password" name="password" placeholder="Digite a sua senha" required>
+                            </div>
+                            <div class="flex items-center justify-between">
+                            <div class="text-sm">
+                            <a href="form.html" class="text-black hover:text-blue-500">
+                                Quero me cadastrar
+                            </a>
+                            </div>
+                        </div>
+                        <div>
+                            <button x-on:click="validlogin()" type="button" class="w-full flex justify-center bg-indigo-400  hover:bg-indigo-500 text-gray-100 p-3  rounded-full tracking-wide font-semibold  shadow-lg cursor-pointer transition ease-in duration-500">
+                            Acessar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+       
+    </body>
+
+</html>
