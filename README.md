@@ -1,4 +1,4 @@
-# toth-plataform
+# Plataforma Thoth
 
 <img src="https://i.ibb.co/nsSkr27/Frame-15.png" alt="Frame-15" border="0" />
 
