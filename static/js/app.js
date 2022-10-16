@@ -122,7 +122,10 @@ function getData() {
             }
             this.buttonLabel = 'Enviando...'
             this.loading = true;
-            fetch('https://reqres.in/api/users', {
+
+            
+
+            fetch('http://127.0.0.1:5000/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -132,9 +135,7 @@ function getData() {
                 .then((response) => {
                     if (response.status === 201) {
                         
-                        this.modalHeaderText = "Parabéns!!!"
-                        this.modalBodyText = "Você foi registrado com sucesso!";
-                        this.status = true;
+                    
                         var email = this.formData.email
                         var password = this.formData.password
                         this.setCookie("user_details", JSON.stringify({email: email, pass: password}), 365)
