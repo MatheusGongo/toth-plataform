@@ -138,7 +138,7 @@ function getData() {
                         var email = this.formData.email
                         var password = this.formData.password
                         this.setCookie("user_details", JSON.stringify({email: email, pass: password}), 365)
-                        window.location.href = "home.html";
+                        window.location.href = "http://localhost:5000/success";
                         
                     } else {
                         throw new Error("Seu registro falhou");

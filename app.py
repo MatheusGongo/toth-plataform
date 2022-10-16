@@ -60,9 +60,33 @@ def validate():
     return redirect(url_for("login"))  
 
 
-@app.route('/home')  
+@app.route('/plataform')  
 def home():  
-    return "logged in successfully"  
+    return render_template("students.html")  
+
+@app.route('/step-1', methods =["POST", "GET"])  
+def step_1():  
+    return render_template("step_1.html")
+
+
+@app.route('/form_student', methods =["POST", "GET"])  
+def form_student():  
+    return render_template("form_student.html")
+
+
+@app.route('/validate_group', methods = ["POST"])  
+def step_2(): 
+    print(request.form['groups'])
+
+    if request.method == 'POST' and request.form['groups'] == 'estudante':  
+        return redirect(url_for("form_student"))  
+    return render_template("form_teacher.html")    
+
+
+@app.route('/success', methods =["POST", "GET"])  
+def modal_success():  
+    return render_template("modal_success.html")
+
 
 if __name__ == '__main__':
 	app.run(debug=True)

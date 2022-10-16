@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% from '_mycomponents.html' import headComponent%}
+
+{{ headComponent() }}
+
+<body class="antialiased">
+
+<main id="content" role="main" class="w-full max-w-lg mx-auto p-6">
+    <div class="mt-7 bg-white  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700">
+      <div class="p-4 sm:p-7">
+        <div class="text-left">
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                Passo 1 de 2
+            </p>
+          <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">O que você é?</h1>
+          
+        </div>
+
+        <div class="mt-5">
+          <form name="form" method="post" action="http://localhost:5000/validate_group">
+            <div class="grid gap-y-4">
+                <div class="flex items-center mb-4">
+                    <input id="estudante" type="radio" name="groups" value="estudante" class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300" aria-labelledby="estudante" aria-describedby="estudante" checked="">
+                    <label for="estudante" class="text-sm font-medium text-gray-900 ml-2 block">
+                    Estudante
+                    </label>
+                </div>
+        
+                <div class="flex items-center mb-4">
+                    <input id="professor" type="radio" name="groups" value="professor" class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300" aria-labelledby="professor" aria-describedby="professor">
+                    <label for="professor" class="text-sm font-medium text-gray-900 ml-2 block">
+                    Professor
+                    </label>
+                </div>
+              <button type="submit" class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Continuar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>

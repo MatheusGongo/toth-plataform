@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+
+<html lang="pt-br">
+
+  <head>
+      <title>Thoth - Learning</title>
+      <meta charset="utf-8">
+      <meta name="author" content="Matheus Gongo">
+      <meta name="description" content="Site de produtos de beleza">
+      <meta name="keywords" content="">
+      <script src="https://cdn.tailwindcss.com"></script>
+      <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js" defer></script>
+      <link rel="stylesheet" href="app.css">
+      <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </head>
+
+  <body>
+
+
+    <main id="content" role="main" class="w-full max-w-lg mx-auto p-6">
+      <div class="mt-20 bg-white rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-4 sm:p-7">
+
+          <div class="flex justify-center">
+              <iframe src="https://embed.lottiefiles.com/animation/57490"></iframe>
+          </div>
+          <div class="text-center mt-5">
+            <p class="block text-lg font-medium text-gray-800 dark:text-white">Parabéns, seu cadastro foi realizado com sucesso!!</p>
+          </div>
+
+          <div class="flex justify-center mt-5">
+            <a href="/plataform" class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800">Ir para a plataforma</a>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
