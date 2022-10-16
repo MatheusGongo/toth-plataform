@@ -64,8 +64,6 @@ function getData() {
 
                 //Valida o formato do CEP.
                 if(validacep.test(cep)) {
-                    console.log("agora sim")
-
                     
                     var url = 'https://viacep.com.br/ws/' + cep + '/json/';
 
@@ -74,12 +72,18 @@ function getData() {
                         if (this.readyState == 4) {
                             if (this.status == 200) {
                                 var result = JSON.parse(this.responseText);
+                                console.log(result)
 
                                 this.dataCEP = result;
                                 document.getElementById("rua").value = this.dataCEP.logradouro
                                 document.getElementById("bairro").value = this.dataCEP.bairro
                                 document.getElementById("cidade").value = this.dataCEP.localidade
                                 document.getElementById("uf").value = this.dataCEP.uf
+
+                                this.formData.logradouro = this.dataCEP.logradouro
+                                this.formData.bairro = this.dataCEP.bairro
+                                this.formData.cidade = this.dataCEP.localidade
+                                this.formData.uf = this.dataCEP.uf
                             }
                         }
                     };
@@ -135,7 +139,7 @@ function getData() {
                 .then((response) => {
                     if (response.status === 201) {
                         
-                    
+                        console.log(this.formData)
                         var email = this.formData.email
                         var password = this.formData.password
                         this.setCookie("user_details", JSON.stringify({email: email, pass: password}), 365)

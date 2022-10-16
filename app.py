@@ -50,34 +50,7 @@ def showMessage(error=None):
 @app.route("/")
 @app.route("/index", methods=["POST", "GET"])
 def index():
-
-    limits = [1,2,3,4,5,6]
-    pokemons_req = []
-
-    for limit in limits:
-        api = f"https://pokeapi.co/api/v2/pokemon/{limit}"
-        request = requests.get(api)
-        pokemon_load = json.loads(request.content)
-        pokemons_req.append(pokemon_load)
-
-
-    pokemon_json = []
-    for pokemon in pokemons_req:
-        pokemon_body = {
-            "name": pokemon["name"],
-            "sprite": pokemon["sprites"]["back_default"],
-            "height": pokemon["height"],
-            "weight": pokemon["weight"]
-        }
-        pokemon_json.append(pokemon_body)
-        
-    print(pokemon_json)
-
-    list_titles = [{"thead": "Altura"}]
-
-    print(list_titles)
-
-    return render_template("index.html", items = pokemon_json, list_titles = list_titles)
+    return render_template("index.html")
 
 
 @app.route("/new", methods=["POST", "GET"])
@@ -139,10 +112,127 @@ def modal_success():
 
 
 
-@app.route('/tasks-list', methods =["POST", "GET"])
-def tasks_student():
-    return render_template("tasks_list.html")
+@app.route('/literatura-tasks', methods =["POST", "GET"])
+def literatura_tasks():
 
+    questions = [
+        {
+            'question': "1) A obra de Gregório de Matos – autor que se destaca na literatura barroca brasileira – compreende?",
+            'answers': [
+            { 'text': "a) poesia épico-amorosa e obras dramáticas", 'correct': False },
+            { 'text': "b) poesia satírica e contos burlescos", 'correct': False },
+            { 'text': "c) poesia lírica, de caráter religioso e amoroso, e poesia satírica", 'correct': False },
+            { 'text': "d) poesia confessional e autos religiosos", 'correct': True },
+            ],
+        },
+        {
+            'question': "2) Escolha a alternativa que completa de forma correta a frase abaixo: A linguagem ________, o paradoxo, ________ e o registro das impressões sensoriais são recursos linguísticos presentes na poesia ________.",
+            'answers': [
+            { 'text': "a) Zoo", 'correct': False },
+            { 'text': "b) Section Eng-Ed", 'correct': True },
+            { 'text': "c) At the park", 'correct': False },
+            { 'text': "d) None of them", 'correct': False },
+            ],
+        }]
+
+    return render_template("literatura_tasks.html", questions = questions)
+
+
+@app.route('/literatura-videos', methods =["POST", "GET"])
+def literatura_videos():
+
+    videos = [
+        {   'title': 'Primeiras noções sobre Teoria da Literatura',
+            'link': "https://streamable.com/e/s35jvn"
+        },
+        {
+            'title': 'Primeiras noções sobre Teoria da Literatura',
+            'link': "https://streamable.com/e/s35jvn"
+        }]
+
+    return render_template("literatura_videos.html", videos = videos)
+
+
+@app.route('/matematica-tasks', methods =["POST", "GET"])
+def matematica_tasks():
+
+    questions = [
+        {
+            'question': "what is 10 * 2?",
+            'answers': [
+            { 'text': "102", 'correct': False },
+            { 'text': "210", 'correct': False },
+            { 'text': "12", 'correct': False },
+            { 'text': "20", 'correct': True },
+            ],
+        },
+        {
+            'question': "where can you learn how to be a better technical writer?",
+            'answers': [
+            { 'text': "Zoo", 'correct': False },
+            { 'text': "Section Eng-Ed", 'correct': True },
+            { 'text': "At the park", 'correct': False },
+            { 'text': "None of them", 'correct': False },
+            ],
+        }]
+
+    return render_template("matematica_tasks.html", questions = questions)
+
+@app.route('/matematica-videos', methods =["POST", "GET"])
+def matematica_videos():
+
+    videos = [
+        {   'title': 'Primeiras noções sobre Teoria da Literatura',
+            'link': "https://streamable.com/e/s35jvn"
+        },
+        {
+            'title': 'Primeiras noções sobre Teoria da Literatura',
+            'link': "https://streamable.com/e/s35jvn"
+        }]
+
+    return render_template("matematica_videos.html", videos = videos)
+
+
+
+@app.route('/ciencia-tasks', methods =["POST", "GET"])
+def ciencia_tasks():
+
+    questions = [
+        {
+            'question': "1) what is 10 * 2?",
+            'answers': [
+            { 'text': "102", 'correct': False },
+            { 'text': "210", 'correct': False },
+            { 'text': "12", 'correct': False },
+            { 'text': "20", 'correct': True },
+            ],
+        },
+        {
+            'question': "2) where can you learn how to be a better technical writer?",
+            'answers': [
+            { 'text': "Zoo", 'correct': False },
+            { 'text': "Section Eng-Ed", 'correct': True },
+            { 'text': "At the park", 'correct': False },
+            { 'text': "None of them", 'correct': False },
+            ],
+        }]
+
+    return render_template("ciencia_tasks.html", questions = questions)
+
+
+@app.route('/ciencia-videos', methods =["POST", "GET"])
+def ciencia_videos():
+
+    videos = [
+        {   'title': 'Primeiras noções sobre Teoria da Literatura',
+            'link': "https://streamable.com/e/s35jvn"
+        },
+        {
+            'title': 'Primeiras noções sobre Teoria da Literatura',
+            'link': "https://streamable.com/e/s35jvn"
+        }]
+
+    return render_template("ciencia_videos.html", videos = videos)
 
 
 if __name__ == '__main__':

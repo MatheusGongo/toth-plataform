@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Thoth</title>
+	<!-- Tailwind -->
+	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+	<!-- Alpine -->
+	<script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
+	<script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js" defer></script>
+	<!-- AOS -->
+	<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+	<!-- Custom style -->
+	<link rel="stylesheet" href="css/app.css" />
+	<!-- Poppins font -->
+	<link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+</head>
+<body class="antialiased font-sans">
+    <div>
+        {% from '_mycomponents.html' import sidebarComponent %}
+
+        <div class="flex h-screen overflow-y-hidden bg-white" x-data="setup()" x-init="$refs.loading.classList.add('hidden')">
+        <!-- Loading screen -->
+        <div
+            x-ref="loading"
+            class="fixed inset-0 z-50 flex items-center justify-center text-white bg-black bg-opacity-50"
+            style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)"
+        >
+            Loading.....
+        </div>
+
+        <!-- Sidebar backdrop -->
+        <div
+            x-show.in.out.opacity="isSidebarOpen"
+            class="fixed inset-0 z-10 bg-black bg-opacity-20 lg:hidden"
+            style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)"
+        ></div>
+
+        {{sidebarComponent()}}
+
+        <div class="flex flex-col flex-1 h-full overflow-hidden">
+            <!-- Navbar -->
+            <header class="flex-shrink-0 border-b">
+            <div class="flex items-center justify-between p-2">
+                <!-- Navbar left -->
+                <div class="flex items-center space-x-3">
+                <span class="p-2 text-xl font-semibold tracking-wider uppercase lg:hidden">K-WD</span>
+                <!-- Toggle sidebar button -->
+                <button @click="toggleSidbarMenu()" class="p-2 rounded-md focus:outline-none focus:ring">
+                    <svg
+                    class="w-4 h-4 text-gray-600"
+                    :class="{'transform transition-transform -rotate-180': isSidebarOpen}"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                    </svg>
+                </button>
+                </div>
+
+                <!-- Mobile search box -->
+                <div
+                x-show.transition="isSearchBoxOpen"
+                class="fixed inset-0 z-10 bg-black bg-opacity-20"
+                style="backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px)"
+                >
+                <div
+                    @click.away="isSearchBoxOpen = false"
+                    class="absolute inset-x-0 flex items-center justify-between p-2 bg-white shadow-md"
+                >
+                    <div class="flex items-center flex-1 px-2 space-x-2">
+                    <!-- search icon -->
+                    <span>
+                        <svg
+                        class="w-6 h-6 text-gray-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                        </svg>
+                    </span>
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        class="w-full px-4 py-3 text-gray-600 rounded-md focus:bg-gray-100 focus:outline-none"
+                    />
+                    </div>
+                    <!-- close button -->
+                    <button @click="isSearchBoxOpen = false" class="flex-shrink-0 p-4 rounded-md">
+                    <svg
+                        class="w-4 h-4 text-gray-500"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    </button>
+                </div>
+                </div>
+
+                <!-- Desktop search box -->
+                <div class="items-center hidden px-2 space-x-2 md:flex-1 md:flex md:mr-auto md:ml-5">
+                <!-- search icon -->
+                <span>
+                    <svg
+                    class="w-5 h-5 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                    </svg>
+                </span>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    class="px-4 py-3 rounded-md hover:bg-gray-100 lg:max-w-sm md:py-2 md:flex-1 focus:outline-none md:focus:bg-gray-100 md:focus:shadow md:focus:border"
+                />
+                </div>
+
+                <!-- Navbar right -->
+                <div class="relative flex items-center space-x-3">
+                <!-- Search button -->
+                <button
+                    @click="isSearchBoxOpen = true"
+                    class="p-2 bg-gray-100 rounded-full md:hidden focus:outline-none focus:ring hover:bg-gray-200"
+                >
+                    <svg
+                    class="w-6 h-6 text-gray-500"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                    </svg>
+                </button>
+
+
+                <!-- avatar button -->
+                <div class="relative" x-data="{ isOpen: false }">
+                    <button @click="isOpen = !isOpen" class="p-1 bg-gray-200 rounded-full focus:outline-none focus:ring">
+                    <img
+                        class="object-cover w-8 h-8 rounded-full"
+                        src="https://avatars0.githubusercontent.com/u/57622665?s=460&u=8f581f4c4acd4c18c33a87b3e6476112325e8b38&v=4"
+                        alt="Ahmed Kamel"
+                    />
+                    </button>
+                    <!-- green dot -->
+                    <div class="absolute right-0 p-1 bg-green-400 rounded-full bottom-3 animate-ping"></div>
+                    <div class="absolute right-0 p-1 bg-green-400 border border-white rounded-full bottom-3"></div>
+
+                    <!-- Dropdown card -->
+                    <div
+                    @click.away="isOpen = false"
+                    x-show.transition.opacity="isOpen"
+                    class="absolute mt-3 transform -translate-x-full bg-white rounded-md shadow-lg min-w-max"
+                    >
+                    <div class="flex flex-col p-4 space-y-1 font-medium border-b">
+                        <span class="text-gray-800">{{user}}</span>
+                        <span class="text-sm text-gray-400">ahmed.kamel@example.com</span>
+                    </div>
+                    <div class="flex items-center justify-center p-4 text-blue-700 underline border-t">
+                        <a href="/logout">Logout</a>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </header>
+            <!-- Main content -->
+            <main class="flex-1 max-h-full p-5 overflow-hidden overflow-y-scroll">
+                <div class="container mx-auto grid grid-cols-1 pt-6 gap-8">
+                    <div class="grid grid-cols-1">
+
+                        <div class="mt-2">
+                            <nav class="flex flex-col sm:flex-row">
+                                <a class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                                    Questões
+                                </a>
+                                <a class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none" href="/literatura-videos">
+                                    Vídeos
+                                </a>
+                            </nav>
+                            <h3 class="mt-6 text-xl font-bold mb-10">Questões de Literatura</h3>
+                            {% for question in questions %}
+                                <div class="grid grid-cols-1 shadow border rounded-ms px-5 py-6 w-full mb-6">
+                                    <div class="font-medium mb-6">
+                                        {{question.question}}  
+                                    </div>
+                                    <div class="grid grid-cols-1">
+                                        {% for answer in question.answers %}
+                                            <div class="font-normal">
+                                                {{answer.text}}  
+                                            </div> 
+                                        {% endfor %}  
+                                    </div>
+                                    <input type="text" class="border border-gray-200 mt-4 w-20 px-2" value=""/>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+
+                    </div>
+                    
+
+                </div>
+            </main>
+            
+        </div>
+
+
+        </div>
+        <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+        <script>
+        const setup = () => {
+            return {
+            loading: true,
+            isSidebarOpen: false,
+            toggleSidbarMenu() {
+                this.isSidebarOpen = !this.isSidebarOpen
+            },
+            isSettingsPanelOpen: false,
+            isSearchBoxOpen: false,
+            }
+        }
+        </script>
+    </div>
+</body>
+
+
