@@ -262,6 +262,45 @@ def ciencia_videos():
 
     return render_template("ciencia_videos.html", videos = videos)
 
+#Arte
+@app.route('/artes-tasks', methods =["POST", "GET"])
+def artes_tasks():
+
+    questions = [
+        {
+            'question': "1) Marque a opção que não pode ser identificada como  uma obra de arte em nosso dia-a-dia:",
+            'answers': [
+            { 'text': "a) Cadeira - móveis", 'correct': False },
+            { 'text': "b) Igreja - construções", 'correct': False },
+            { 'text': "c) Árvore – natureza", 'correct': False },
+            { 'text': "d) Nenhuma das alternativas acima", 'correct': True },
+            ],
+        },
+        {
+            'question': "2) Qual foi o Ápice do fama de Tarsila do Amaral",
+            'answers': [
+            { 'text': "Opea de arame", 'correct': False },
+            { 'text': "Semana de arte moderna de 22", 'correct': True },
+            { 'text': "Crítica feita por Monteiro Lobato", 'correct': False },
+            { 'text': "Sua ida a França", 'correct': False },
+            ],
+        }]
+
+    return render_template("artes_tasks.html", questions = questions)
+
+@app.route('/artes-videos', methods =["POST", "GET"])
+def artes_videos():
+
+    videos = [
+        {   'title': 'O que é Arte?',
+            'link': "https://streamable.com/5pyd03"
+        },
+        {
+            'title': 'Introdução a Arte',
+            'link': "https://streamable.com/46ndlw"
+        }]
+
+    return render_template("artes_videos.html", videos = videos)
 
 if __name__ == '__main__':
 	app.run(host='0.0.0.0', debug=True)
