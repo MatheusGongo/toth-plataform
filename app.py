@@ -186,21 +186,48 @@ def matematica_tasks():
 
     questions = [
         {
-            'question': "what is 10 * 2?",
+            'question': "1) Quanto é 29 x 3?",
             'answers': [
-            { 'text': "102", 'correct': False },
-            { 'text': "210", 'correct': False },
-            { 'text': "12", 'correct': False },
-            { 'text': "20", 'correct': True },
+            { 'text': "a) 102", 'correct': False },
+            { 'text': "b) 92", 'correct': False },
+            { 'text': "c) 87", 'correct': True },
+            { 'text': "d) 70", 'correct': False },
             ],
         },
         {
-            'question': "where can you learn how to be a better technical writer?",
+            'question': "2) Calcule : |2(10-44)| + 5",
             'answers': [
-            { 'text': "Zoo", 'correct': False },
-            { 'text': "Section Eng-Ed", 'correct': True },
-            { 'text': "At the park", 'correct': False },
-            { 'text': "None of them", 'correct': False },
+            { 'text': "a) 73", 'correct': True },
+            { 'text': "b) 87", 'correct': False },
+            { 'text': "c) 46", 'correct': False },
+            { 'text': "d) 59", 'correct': False },
+            ],
+        },
+        {
+            'question': "3) A resposta da divisao, |25 +(-29)| x 3 / 5 ",
+            'answers': [
+            { 'text': "a) 3,6", 'correct': False },
+            { 'text': "b) 4", 'correct': False },
+            { 'text': "c) 2,4", 'correct': True },
+            { 'text': "d) 1,9", 'correct': False },
+            ],
+        },
+        {
+            'question': "4) Calcule : 5! / 5",
+            'answers': [
+            { 'text': "a) 24", 'correct': True },
+            { 'text': "b) 32", 'correct': False },
+            { 'text': "c) 50", 'correct': False },
+            { 'text': "d) 120", 'correct': False },
+            ],
+        },
+        {
+            'question': "5) Some 10 com a resposta de |x|. (x + 10)10/2 = 15/5.",
+            'answers': [
+            { 'text': "a) 12,4", 'correct': False },
+            { 'text': "b) 20,3", 'correct': False },
+            { 'text': "c) 9,4", 'correct': False },
+            { 'text': "d) 19,4", 'correct': True },
             ],
         }]
 
@@ -210,12 +237,12 @@ def matematica_tasks():
 def matematica_videos():
 
     videos = [
-        {   'title': 'Primeiras noções sobre Teoria da Literatura',
-            'link': "https://streamable.com/e/s35jvn"
+        {   'title': 'Matemática Básica',
+            'link': "https://streamable.com/6867ba"
         },
         {
-            'title': 'Primeiras noções sobre Teoria da Literatura',
-            'link': "https://streamable.com/e/s35jvn"
+            'title': 'Matemática do Zero',
+            'link': "https://streamable.com/fpifqa"
         }]
 
     return render_template("matematica_videos.html", videos = videos)
@@ -227,23 +254,52 @@ def ciencia_tasks():
 
     questions = [
         {
-            'question': "1) what is 10 * 2?",
+            'question': "1) O autor considerado “pai” da sociologia, Augusto Comte, acreditava que a nova ciência das sociedades deveria igualar-se às demais ciências da natureza que se pautavam pelos fenômenos observáveis e mensuráveis para que assim fosse possível apreender as regras gerais que regem o mundo social do indivíduo. Essa perspectiva ideológica é chamada de:",
             'answers': [
-            { 'text': "102", 'correct': False },
-            { 'text': "210", 'correct': False },
-            { 'text': "12", 'correct': False },
-            { 'text': "20", 'correct': True },
+            { 'text': "a) Iluminismo", 'correct': False },
+            { 'text': "b) Darwinismo", 'correct': False },
+            { 'text': "c) Dadaísmo", 'correct': False },
+            { 'text': "d) Positivismo", 'correct': True },
             ],
         },
         {
-            'question': "2) where can you learn how to be a better technical writer?",
+            'question': "2) Desse modo, assinale, das alternativas abaixo, a obra que representa, no expediente de Durkheim, o nascimento da sociologia como ciência a partir da definição do fato social.",
             'answers': [
-            { 'text': "Zoo", 'correct': False },
-            { 'text': "Section Eng-Ed", 'correct': True },
-            { 'text': "At the park", 'correct': False },
-            { 'text': "None of them", 'correct': False },
+            { 'text': "a) As Regras do Método Sociológico", 'correct': False },
+            { 'text': "b) A divisão do Trabalho social ", 'correct': True },
+            { 'text': "c) Sociologia", 'correct': False },
+            { 'text': "d) Educação e Moral", 'correct': False },
             ],
-        }]
+        },
+        {
+            'question': "3) Para onde a bússola aponta?",
+            'answers': [
+            { 'text': "a) Norte", 'correct': True },
+            { 'text': "b) Sul ", 'correct': False },
+            { 'text': "c) Leste", 'correct': False },
+            { 'text': "d) Oeste", 'correct': False },
+            
+            ],
+        },
+        {
+            'question': "4) Como é chamada a propriedade de atrair materiais? ",
+            'answers': [
+            { 'text': "a) Condução", 'correct': False },
+            { 'text': "b) Isopropílico", 'correct': False },
+            { 'text': "c) Isolante", 'correct': False },
+            { 'text': "d) Magnetismo", 'correct': True }, 
+            ],
+        },
+        {
+            'question': "5) O que acontece quando aproximamos os polos iguais de cada imã?",
+            'answers': [
+            { 'text': "a) Se Repelem", 'correct': True },
+            { 'text': "b) Se atraí ", 'correct': False },
+            { 'text': "c) Se chocam", 'correct': False },
+            { 'text': "d) Colide", 'correct': False },
+            
+            ],
+        },]
 
     return render_template("ciencia_tasks.html", questions = questions)
 
@@ -252,12 +308,12 @@ def ciencia_tasks():
 def ciencia_videos():
 
     videos = [
-        {   'title': 'Primeiras noções sobre Teoria da Literatura',
-            'link': "https://streamable.com/e/s35jvn"
+        {   'title': 'O que são Ciências Naturais',
+            'link': "https://streamable.com/cihk8z"
         },
         {
-            'title': 'Primeiras noções sobre Teoria da Literatura',
-            'link': "https://streamable.com/e/s35jvn"
+            'title': 'O que são Ciências Sociais',
+            'link': "https://streamable.com/t31dpp"
         }]
 
     return render_template("ciencia_videos.html", videos = videos)
