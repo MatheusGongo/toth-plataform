@@ -45,7 +45,7 @@
                     <div x-show="showAlert" class="block text-sm text-red-600 bg-red-200 border border-red-400 h-12 mt-10 flex items-center p-4 rounded-sm relative">
                         <strong class="mr-1">Preencha todos os campos obrigatórios!</strong> Por favor, verifique os campos para prosseguir em seu cadastro.
                         <button type="button" @click="showAlert = false">
-                            <span class="absolute top-0 bottom-0 right-0 text-2xl px-3 py-1 hover:text-red-900"" >×</span>
+                            <span class="absolute top-0 bottom-0 right-0 text-2xl px-3 py-1 hover:text-red-900">x</span>
                         </button>
                       </div>
                     <!-- modal ends -->
@@ -66,7 +66,7 @@
                                 </div>
                                 <!-- registration form starts-->
 
-                                <form action="/register" method="POST" class="my-6" @submit.prevent="submitData">
+                                <form name="form" method="post" action="http://127.0.0.1:5000/register" class="my-6">
                                     <div class="my-6 w-11/12 mx-auto xl:mx-0">
                                         <div class="font-bold mb-1 text-gray-700 block mt-10">Informações pessoais</div>
 
@@ -125,16 +125,16 @@
                                         <div class="flex flex-wrap space-x-4 mt-6">
                                             <div class="w-1/3 flex flex-col mb-6">
                                                 <span class="px-1 text-sm text-gray-600">Nome*</span>
-                                                <input placeholder="Digite o seu nome" type="text" x-model="formData.nome" :class="{'border-green-400': isNome(formData.nome) && formData.nome.length > 0, 'border-red-400': !isNome(formData.nome) && formData.nome.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white  placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
+                                                <input placeholder="Digite o seu nome" type="text" name="first_name" x-model="formData.nome" :class="{'border-green-400': isNome(formData.nome) && formData.nome.length > 0, 'border-red-400': !isNome(formData.nome) && formData.nome.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white  placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
                                             </div>
                                             <div class="w-1/3 flex flex-col mb-6">
                                                 <span class="px-1 text-sm text-gray-600">Sobrenome*</span>
-                                                <input placeholder="Digite o seu sobrenome" type="text" x-model="formData.sobrenome" :class="{'border-green-400': isSobrenome(formData.sobrenome) && formData.sobrenome.length > 0, 'border-red-400': !isSobrenome(formData.sobrenome) && formData.sobrenome.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
+                                                <input placeholder="Digite o seu sobrenome" type="text" name="last_name" x-model="formData.sobrenome" :class="{'border-green-400': isSobrenome(formData.sobrenome) && formData.sobrenome.length > 0, 'border-red-400': !isSobrenome(formData.sobrenome) && formData.sobrenome.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
                                                 
                                             </div>
                                             <div class="w-1/4 flex flex-col mb-6">
                                                 <span class="px-1 text-sm text-gray-600">CPF*</span>
-                                                <input pattern="[0-9]+" maxlength="11" placeholder="Digite o seu CPF" type="text" x-model="formData.cpf" :class="{'border-green-400': isCPF(formData.cpf) && formData.cpf.length > 0, 'border-red-400': !isCPF(formData.cpf) && formData.cpf.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
+                                                <input pattern="[0-9]+" maxlength="11" placeholder="Digite o seu CPF" name="cpf" type="text" x-model="formData.cpf" :class="{'border-green-400': isCPF(formData.cpf) && formData.cpf.length > 0, 'border-red-400': !isCPF(formData.cpf) && formData.cpf.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
                                                 <li x-show="formData.cpf.length > 0" class="flex items-center py-1">
                                                     <div :class="{'bg-green-200 text-green-700': isCPF(formData.cpf),'bg-red-200 text-red-700': !isCPF(formData.cpf)}" class=" rounded-full p-1 fill-current ">
                                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -153,7 +153,7 @@
                                         <div class="flex flex-wrap space-x-4">
                                             <div class="w-1/2 flex flex-col mb-6">
                                                 <span class="px-1 text-sm text-gray-600">Email*</span>
-                                                <input placeholder="Digite o seu email" type="text" x-model="formData.email" :class="{'border-green-400': isEmail(formData.email) && formData.email.length > 0, 'border-red-400': !isEmail(formData.email) && formData.email.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
+                                                <input placeholder="Digite o seu email" type="text" name="email" x-model="formData.email" :class="{'border-green-400': isEmail(formData.email) && formData.email.length > 0, 'border-red-400': !isEmail(formData.email) && formData.email.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
                                                 <li x-show="formData.email.length > 0" class="flex items-center py-1">
                                                     <div :class="{'bg-green-200 text-green-700': isEmail(formData.email),'bg-red-200 text-red-700': !isEmail(formData.email)}" class=" rounded-full p-1 fill-current ">
                                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -176,7 +176,7 @@
                                         <div class="flex flex-wrap space-x-4 mt-6">
                                             <div class="w-1/4 flex flex-col mb-6">
                                                 <span class="px-1 text-sm text-gray-600">CEP*</span>
-                                                <input pattern="\d*" maxlength="9" placeholder="Digite o seu CEP" type="text" id="cep" x-model="formData.cep" :class="{'border-green-400': isCEP(formData.cep) && formData.cep.length > 0, 'border-red-400': !isCEP(formData.cep) && formData.cep.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
+                                                <input pattern="\d*" maxlength="9" placeholder="Digite o seu CEP" name="cep" type="text" id="cep" x-model="formData.cep" :class="{'border-green-400': isCEP(formData.cep) && formData.cep.length > 0, 'border-red-400': !isCEP(formData.cep) && formData.cep.length > 0}" class="text-md block px-3 py-2 rounded-lg w-full bg-white placeholder-gray-400 shadow-md focus:placeholder-gray-300 focus:bg-white border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200">
                                                 <li x-show="formData.cep.length > 0" class="flex items-center py-1">
                                                     <div :class="{'bg-green-200 text-green-700': isCEP(formData.cep),'bg-red-200 text-red-700': !isCEP(formData.cep)}" class=" rounded-full p-1 fill-current ">
                                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24"
@@ -225,6 +225,7 @@
                                             <input
                                                     :type="togglePassword ? 'text' : 'password'"
                                                     @keydown="checkPasswordStrength()"
+                                                    name="password"
                                                     x-model="formData.password"
                                                     class="w-full px-4 py-3 rounded-lg shadow-md focus:outline-none focus:shadow-outline text-gray-600 font-medium border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200"
                                                     placeholder="Digite a sua senha..."
@@ -249,7 +250,7 @@
                                             <div x-text="passwordStrengthText" class="text-gray-500 font-medium text-sm ml-3 leading-none"></div>
                                         </div>
 
-                                        <button class="mt-3 text-lg font-semibold bg-indigo-600 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-indigo-800" x-text="buttonLabel" :disabled="loading">Finalizar</button>
+                                        <button type="submit" value="submit" class="mt-3 text-lg font-semibold bg-indigo-600 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-indigo-800">Finalizar</button>
                                     </div>
                                 </form>
                                 <!-- registration form ends -->

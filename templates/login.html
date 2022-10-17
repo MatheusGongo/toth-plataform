@@ -16,12 +16,17 @@
     </head>
 
     <body>
+        {% for message in get_flashed_messages() %}
+            <div>
+                {{ message }}
+            </div>
+        {% endfor %}
 
     <div x-data="getData()" x-init="checkCookie()" class="bg-no-repeat bg-cover bg-center relative" style="background-image: url(https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2071&q=80);"><div class="absolute bg-gradient-to-b from-stone-800 to-stone-900 opacity-75 inset-0 z-0"></div>
     <div x-show="showAlert" class="block text-sm text-red-600 bg-red-200 border border-red-400 h-12 mt-10 flex items-center p-4 rounded-sm relative">
         <strong class="mr-1">Usuário não encontrado!</strong> Por favor, verifique os campos abaixo.
         <button type="button" @click="showAlert = false">
-            <span class="absolute top-0 bottom-0 right-0 text-2xl px-3 py-1 hover:text-red-900"" >×</span>
+            <span class="absolute top-0 bottom-0 right-0 text-2xl px-3 py-1 hover:text-red-900">x</span>
         </button>
       </div>    
     <div class="min-h-screen sm:flex sm:flex-row mx-0 justify-center">
@@ -39,7 +44,7 @@
                         <h3 class="font-semibold text-2xl text-gray-800">Login </h3>
                         <p class="text-gray-500">Por favor, entre com a sua conta.</p>
                     </div>
-                    <form name="form" method="post" action="http://localhost:5000/login" >
+                    <form name="form" method="post" action="http://127.0.0.1:5000/login" >
                         <div class="space-y-5">
                             <div class="space-y-2">
                                 <label class="text-sm font-medium text-gray-700 tracking-wide">Email</label>

@@ -124,40 +124,9 @@ function getData() {
                 this.showAlert = true;
                 return;
             }
-            this.buttonLabel = 'Enviando...'
-            this.loading = true;
-
             
 
-            fetch('http://127.0.0.1:5000/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(this.formData)
-                })
-                .then((response) => {
-                    if (response.status === 201) {
-                        
-                        console.log(this.formData)
-                        var email = this.formData.email
-                        var password = this.formData.password
-                        this.setCookie("user_details", JSON.stringify({email: email, pass: password}), 365)
-                        window.location.href = "http://localhost:5000/success";
-                        
-                    } else {
-                        throw new Error("Seu registro falhou");
-                    }
-                })
-                .catch((error) => {
-                    this.modalHeaderText = "Ooops Error!"
-                    this.modalBodyText = error.message;
-                    this.isError = true;
-                })
-                .finally(() => {
-                    this.loading = false;
-                    this.buttonLabel = 'Finalizar'
-                })
+            
         },
 
       

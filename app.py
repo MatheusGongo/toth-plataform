@@ -3,38 +3,78 @@ from pickletools import read_uint1
 from urllib import response
 from flask import *
 from flask_restful import Resource, Api
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_cors import CORS
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 import urllib.request, json
 import requests
-import pymysql
-from flaskext.mysql import MySQL
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+
+
 
 
 app = Flask(__name__)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 CORS(app) ## To allow direct AJAX calls
 
 app.secret_key = "Secrect Key"
 app.permanent_session_lifetime = timedelta(minutes=120)
 
-mysql = MySQL()
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'thoth'
-mysql.init_app(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///thoth.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
+db = SQLAlchemy(app)
+
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        return User.query.get(user_id)
+    except:
+        return None
+    
+    
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True) 
+    first_name = db.Column(db.String(50), nullable=False)
+    last_name = db.Column(db.String(50), nullable=False)
+    cpf = db.Column(db.String(500), nullable=False)
+    postcode = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    password = db.Column(db.String(500), nullable=False)
+    
+    def __init__(self, first_name, last_name, cpf, postcode, email, password):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.cpf = cpf
+        self.postcode = postcode
+        self.email = email
+        self.password = password
+        
+        
+    def verify_password(self, pwd):
+        return check_password_hash(self.password, pwd)
 
 
 @app.route('/register', methods=['POST'])
-
 def create_user():
-    print(request.json)
-    if(request.method == "POST"):
-        response = jsonify("Sucesso")
-        response.status_code = 201
-        return response
-    else:
-        return False
+    if request.method == 'POST':
+        first_name = request.form["first_name"]
+        last_name = request.form["last_name"]
+        cpf = request.form["cpf"]
+        postcode = request.form["cep"]
+        email = request.form["email"]
+        password = request.form["password"]
+        user = User(first_name, last_name, cpf, postcode, email, password)
+        db.session.add(user)
+        db.session.commit()
+        
+        return redirect(url_for('login'))
+    
+    return render_template('form_student.html')
     
 
 @app.errorhandler(404)
@@ -57,32 +97,33 @@ def index():
 def new():
     return render_template("form.html")
 
-
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
-    if request.method == 'POST' and request.form['pass'] == 'jtp': 
+    if request.method == 'POST': 
         session.permanent = True
-        user = request.form["email"]
-        session["user"] = user 
-        return redirect(url_for("user"))  
-    else: 
-        if "user" in session:
+        email = request.form["email"]
+        password = request.form["pass"]
+        user = User.query.filter_by(email=email).first()
+        if user:
+            login_user(user)
+            flash("Login realizado com sucesso!")
             return redirect(url_for("user"))
-        return render_template("login.html") 
+        else:
+             flash("Usuário não encontrado")
+        
+    return render_template("login.html") 
 
-@app.route('/user')  
-def user(): 
-    if "user" in session:
-        user = session["user"] 
-        return render_template("students.html", user=user) 
-    else:
-        return redirect(url_for("login")) 
+
+@app.route('/user', methods=['GET', 'POST'])  
+@login_required
+def user():
+    return render_template("students.html") 
+  
 
 
 @app.route("/logout")
 def logout():
-    session.pop("user", None)
+    logout_user()
     return redirect(url_for("login"))
 
 
@@ -359,4 +400,4 @@ def artes_videos():
     return render_template("artes_videos.html", videos = videos)
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', debug=True)
+    app.run()
