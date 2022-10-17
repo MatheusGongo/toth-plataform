@@ -111,7 +111,7 @@ def modal_success():
     return render_template("modal_success.html")
 
 
-
+#Literatura
 @app.route('/literatura-tasks', methods =["POST", "GET"])
 def literatura_tasks():
 
@@ -133,6 +133,33 @@ def literatura_tasks():
             { 'text': "c) At the park", 'correct': False },
             { 'text': "d) None of them", 'correct': False },
             ],
+        }, 
+        {
+            'question': "3) Sobre o classicismo é correto afirmar:",
+            'answers': [
+            { 'text': "a) Movimento que faz referência aos modelos clássicos greco-romanos.", 'correct': True },
+            { 'text': "b) Presença de poemas com versos livres e brancos.", 'correct': False },
+            { 'text': "c) Memorial de Aires é um exemplo de romance classicista.", 'correct': False },
+            { 'text': "d) Possui uma linguagem informal, com uso de regionalismos.", 'correct': False },
+            ],
+        },
+        {
+            'question': "4) No Brasil, o período correspondente ao classicismo europeu foi chamado de",
+            'answers': [
+            { 'text': "a) Simbolismo", 'correct': False },
+            { 'text': "b) Quinhentismo", 'correct': True},
+            { 'text': "c) Barroco", 'correct': False },
+            { 'text': "d) Os Lusíadas", 'correct': False },
+            ],
+        },
+        {
+            'question': "5) Um dos maiores autores de língua portuguesa, Luís Vaz de Camões, escreveu obras no período classicista. Uma delas que se destaca é",
+            'answers': [
+            { 'text': "a) Odisseia", 'correct': False },
+            { 'text': "b) Eneida", 'correct': False},
+            { 'text': "c) Os Lusíadas", 'correct': True },
+            { 'text': "d) Dom Quixote", 'correct': False },
+            ],
         }]
 
     return render_template("literatura_tasks.html", questions = questions)
@@ -146,13 +173,14 @@ def literatura_videos():
             'link': "https://streamable.com/e/s35jvn"
         },
         {
-            'title': 'Primeiras noções sobre Teoria da Literatura',
-            'link': "https://streamable.com/e/s35jvn"
+            'title': 'Introdução a Literatura',
+            'link': "https://streamable.com/7hsbh7"
         }]
 
     return render_template("literatura_videos.html", videos = videos)
 
 
+#Matematica
 @app.route('/matematica-tasks', methods =["POST", "GET"])
 def matematica_tasks():
 
@@ -193,7 +221,7 @@ def matematica_videos():
     return render_template("matematica_videos.html", videos = videos)
 
 
-
+#Ciencia
 @app.route('/ciencia-tasks', methods =["POST", "GET"])
 def ciencia_tasks():
 
@@ -236,4 +264,4 @@ def ciencia_videos():
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(host='0.0.0.0', debug=True)
