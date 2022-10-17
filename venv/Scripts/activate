@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="C:\Users\Juliana\Desktop\toth-plataform\venv"
+VIRTUAL_ENV="C:\Users\okumu\OneDrive\Área de Trabalho\toth-plataform\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
