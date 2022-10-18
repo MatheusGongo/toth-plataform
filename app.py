@@ -300,7 +300,7 @@ def ciencia_tasks():
             { 'text': "a) Brasil", 'alternative': "a" },
             { 'text': "b) Eua", 'alternative': "b" },
             { 'text': "c) Madagascar", 'alternative': "c" },
-            { 'text': "d) Japão", 'alternative': "d" }, 
+            { 'text': "d) Magnetismo", 'alternative': "d" }, 
             ],
             'answer': 'd'
         }

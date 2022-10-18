@@ -208,15 +208,6 @@
                                 </a>
                             </nav>
                             <h3 class="mt-6 text-xl font-bold mb-10">Videos de Ciência</h3>
-                            {% for video in videos %}
-                                <div class="grid grid-cols-1 shadow border rounded-ms px-5 py-6 w-full mb-6">
-                                    <div class="font-medium mb-6">
-                                        {{video.title}}  
-                                    </div>
-                                    <!-- Render do vídeo -->
-                                    <div style="width:100%;height:0px;position:relative;padding-bottom:56.250%;"><iframe src="{{video.link}}" frameborder="0" width="100%" height="100%" allowfullscreen style="width:100%;height:100%;position:absolute;left:0px;top:0px;overflow:hidden;"></iframe></div>
-                                </div>
-                            {% endfor %}
                            
                         </div>
                         
