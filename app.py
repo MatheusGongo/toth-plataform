@@ -23,6 +23,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+login_manager.login_message = "O usuário precisa estar logado para visualizar esta página"
+
+login_manager.login_message_category = "warning"
+
+
 @login_manager.user_loader
 def load_user(user_id):
     try:
@@ -93,24 +98,15 @@ def get_all_questions():
     return questions
     
 
-@app.errorhandler(404)
-def showMessage(error=None):
-    message = {
-        'status': 404,
-        'message': 'Record not found: ' + request.url,
-    }
-    response = jsonify(message)
-    response.status_code = 404
-    return response
-
 @app.route("/")
 @app.route("/index", methods=["POST", "GET"])
 def index():
     return render_template("index.html")
 
-@app.route("/new", methods=["POST", "GET"])
-def new():
-    return render_template("form.html")
+@app.errorhandler(404)
+def page_not_found(e):
+  return render_template('404.html'), 404
+
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
@@ -146,8 +142,6 @@ def user():
         return render_template("students.html", artes = artes_count, matematica = matematica_count, literatura = literatura_count, ciencia = ciencia_count, tasks_completed = tasks_completed) 
 
 
-
-
 @app.route("/logout")
 def logout():
     logout_user()
@@ -162,26 +156,19 @@ def step_1():
 
 @app.route('/form_student', methods =["POST", "GET"])  
 def form_student():
-    print(request.form)  
     return render_template("form_student.html")
 
 
 @app.route('/validate_group', methods = ["POST"])  
 def step_2(): 
-    print(request.form['groups'])
-
     if request.method == 'POST' and request.form['groups'] == 'estudante':  
         return redirect(url_for("form_student"))  
-    return render_template("form_teacher.html")    
-
-
-@app.route('/success', methods =["POST", "GET"])  
-def modal_success():  
-    return render_template("modal_success.html")
+    return render_template("form_teacher.html")
 
 
 #Literatura
 @app.route('/literatura-tasks', methods =["POST", "GET"])
+@login_required
 def literatura_tasks():
     
     questions = [
@@ -220,6 +207,7 @@ def literatura_tasks():
         
         
 @app.route('/literatura-videos', methods =["POST", "GET"])
+@login_required
 def literatura_videos():
 
     videos = [
@@ -236,6 +224,7 @@ def literatura_videos():
 
 #Matematica
 @app.route('/matematica-tasks', methods =["POST", "GET"])
+@login_required
 def matematica_tasks():
 
     questions = [
@@ -275,6 +264,7 @@ def matematica_tasks():
         
 
 @app.route('/matematica-videos', methods =["POST", "GET"])
+@login_required
 def matematica_videos():
 
     videos = [
@@ -291,6 +281,7 @@ def matematica_videos():
 
 #Ciencia
 @app.route('/ciencia-tasks', methods =["POST", "GET"])
+@login_required
 def ciencia_tasks():
 
     questions = [
@@ -329,6 +320,7 @@ def ciencia_tasks():
 
 
 @app.route('/ciencia-videos', methods =["POST", "GET"])
+@login_required
 def ciencia_videos():
 
     videos = [
@@ -344,6 +336,7 @@ def ciencia_videos():
 
 #Arte
 @app.route('/artes-tasks', methods =["POST", "GET"])
+@login_required
 def artes_tasks():
 
     questions = [
@@ -382,6 +375,7 @@ def artes_tasks():
                 
 
 @app.route('/artes-videos', methods =["POST", "GET"])
+@login_required
 def artes_videos():
 
     videos = [
