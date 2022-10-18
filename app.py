@@ -1,6 +1,4 @@
 from datetime import timedelta
-from pickletools import read_uint1
-from urllib import response
 from flask import *
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
@@ -11,9 +9,6 @@ import urllib.request, json
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-
-
-
 
 app = Flask(__name__)
 login_manager = LoginManager(app)
@@ -26,7 +21,6 @@ app.permanent_session_lifetime = timedelta(minutes=120)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///thoth.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
 db = SQLAlchemy(app)
-
 
 
 @login_manager.user_loader
@@ -53,11 +47,29 @@ class User(db.Model, UserMixin):
         self.postcode = postcode
         self.email = email
         self.password = password
-        
-        
+           
     def verify_password(self, pwd):
         return check_password_hash(self.password, pwd)
-
+    
+    
+class Questions(db.Model):
+    id_question = db.Column(db.Integer, primary_key=True) 
+    question = db.Column(db.String(500), nullable=False)
+    option_a = db.Column(db.String(500), nullable=False)
+    option_b = db.Column(db.String(500), nullable=False)
+    option_c = db.Column(db.String(500), nullable=False)
+    option_d = db.Column(db.String(500), nullable=False)
+    answer = db.Column(db.String(500), nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    
+    def __init__(self, question, option_a, option_b, option_c, option_d, answer):
+        self.question = question
+        self.option_a = option_a
+        self.option_b = option_b
+        self.option_c = option_c
+        self.option_d = option_d
+        self.answer = answer
+        
 
 @app.route('/register', methods=['POST'])
 def create_user():
@@ -74,6 +86,9 @@ def create_user():
         
         return redirect(url_for('login'))
     
+    return render_template('form_student.html')
+
+def get_all_questions():
     return render_template('form_student.html')
     
 
@@ -117,7 +132,8 @@ def login():
 @app.route('/user', methods=['GET', 'POST'])  
 @login_required
 def user():
-    return render_template("students.html") 
+    list_questions = get_all_questions()
+    return render_template("students.html", questions = list_questions) 
   
 
 
@@ -155,57 +171,31 @@ def modal_success():
 #Literatura
 @app.route('/literatura-tasks', methods =["POST", "GET"])
 def literatura_tasks():
-
+    
     questions = [
-        {
-            'question': "1) A obra de Gregório de Matos – autor que se destaca na literatura barroca brasileira – compreende?",
-            'answers': [
-            { 'text': "a) poesia épico-amorosa e obras dramáticas", 'correct': False },
-            { 'text': "b) poesia satírica e contos burlescos", 'correct': False },
-            { 'text': "c) poesia lírica, de caráter religioso e amoroso, e poesia satírica", 'correct': False },
-            { 'text': "d) poesia confessional e autos religiosos", 'correct': True },
-            ],
-        },
-        {
-            'question': "2) Escolha a alternativa que completa de forma correta a frase abaixo: A linguagem ________, o paradoxo, ________ e o registro das impressões sensoriais são recursos linguísticos presentes na poesia ________.",
-            'answers': [
-            { 'text': "a) Zoo", 'correct': False },
-            { 'text': "b) Section Eng-Ed", 'correct': True },
-            { 'text': "c) At the park", 'correct': False },
-            { 'text': "d) None of them", 'correct': False },
-            ],
-        }, 
-        {
-            'question': "3) Sobre o classicismo é correto afirmar:",
-            'answers': [
-            { 'text': "a) Movimento que faz referência aos modelos clássicos greco-romanos.", 'correct': True },
-            { 'text': "b) Presença de poemas com versos livres e brancos.", 'correct': False },
-            { 'text': "c) Memorial de Aires é um exemplo de romance classicista.", 'correct': False },
-            { 'text': "d) Possui uma linguagem informal, com uso de regionalismos.", 'correct': False },
-            ],
-        },
-        {
-            'question': "4) No Brasil, o período correspondente ao classicismo europeu foi chamado de",
-            'answers': [
-            { 'text': "a) Simbolismo", 'correct': False },
-            { 'text': "b) Quinhentismo", 'correct': True},
-            { 'text': "c) Barroco", 'correct': False },
-            { 'text': "d) Os Lusíadas", 'correct': False },
-            ],
-        },
-        {
-            'question': "5) Um dos maiores autores de língua portuguesa, Luís Vaz de Camões, escreveu obras no período classicista. Uma delas que se destaca é",
-            'answers': [
-            { 'text': "a) Odisseia", 'correct': False },
-            { 'text': "b) Eneida", 'correct': False},
-            { 'text': "c) Os Lusíadas", 'correct': True },
-            { 'text': "d) Dom Quixote", 'correct': False },
-            ],
-        }]
+    {
+        'question': "A obra de Gregório de Matos – autor que se destaca na literatura barroca brasileira – compreende?",
+        'options': [
+        { 'text': "a) poesia épico-amorosa e obras dramáticas", 'alternative': "a" },
+        { 'text': "b) poesia satírica e contos burlescos", 'alternative': "b" },
+        { 'text': "c) poesia lírica, de caráter religioso e amoroso, e poesia satírica", 'alternative': "c" },
+        { 'text': "d) poesia confessional e autos religiosos", 'alternative': "d" },
+        ],
+        'answer': 'c'
+    }]
 
-    return render_template("literatura_tasks.html", questions = questions)
-
-
+    if request.method == "GET":
+        return render_template("literatura_tasks.html", questions = questions)
+    else:
+        if request.form["questions"] == questions[0]["answer"]:
+            flash("Parabéns! Resposta correta", 'green')
+            return render_template("literatura_tasks.html", questions = questions)
+        else:
+            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("literatura_tasks.html", questions = questions)
+        
+        
+        
 @app.route('/literatura-videos', methods =["POST", "GET"])
 def literatura_videos():
 
@@ -227,52 +217,28 @@ def matematica_tasks():
 
     questions = [
         {
-            'question': "1) Quanto é 29 x 3?",
-            'answers': [
-            { 'text': "a) 102", 'correct': False },
-            { 'text': "b) 92", 'correct': False },
-            { 'text': "c) 87", 'correct': True },
-            { 'text': "d) 70", 'correct': False },
+            'question': "Some 10 com a resposta de |x|. (x + 10)10/2 = 15/5.",
+            'options': [
+            { 'text': "a) 12,4", 'alternative': "a" },
+            { 'text': "b) 20,3", 'alternative': "b" },
+            { 'text': "c) 9,4", 'alternative': "c" },
+            { 'text': "d) 19,4", 'alternative': "d" },
             ],
-        },
-        {
-            'question': "2) Calcule : |2(10-44)| + 5",
-            'answers': [
-            { 'text': "a) 73", 'correct': True },
-            { 'text': "b) 87", 'correct': False },
-            { 'text': "c) 46", 'correct': False },
-            { 'text': "d) 59", 'correct': False },
-            ],
-        },
-        {
-            'question': "3) A resposta da divisao, |25 +(-29)| x 3 / 5 ",
-            'answers': [
-            { 'text': "a) 3,6", 'correct': False },
-            { 'text': "b) 4", 'correct': False },
-            { 'text': "c) 2,4", 'correct': True },
-            { 'text': "d) 1,9", 'correct': False },
-            ],
-        },
-        {
-            'question': "4) Calcule : 5! / 5",
-            'answers': [
-            { 'text': "a) 24", 'correct': True },
-            { 'text': "b) 32", 'correct': False },
-            { 'text': "c) 50", 'correct': False },
-            { 'text': "d) 120", 'correct': False },
-            ],
-        },
-        {
-            'question': "5) Some 10 com a resposta de |x|. (x + 10)10/2 = 15/5.",
-            'answers': [
-            { 'text': "a) 12,4", 'correct': False },
-            { 'text': "b) 20,3", 'correct': False },
-            { 'text': "c) 9,4", 'correct': False },
-            { 'text': "d) 19,4", 'correct': True },
-            ],
+            'answer': "d"
         }]
 
-    return render_template("matematica_tasks.html", questions = questions)
+    if request.method == "GET":
+        return render_template("matematica_tasks.html", questions = questions)
+    else:
+        if request.form["questions"] == questions[0]["answer"]:
+            flash("Parabéns! Resposta correta", 'green')
+            return render_template("matematica_tasks.html", questions = questions)
+        else:
+            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("matematica_tasks.html", questions = questions)
+        
+        
+        
 
 @app.route('/matematica-videos', methods =["POST", "GET"])
 def matematica_videos():
@@ -295,54 +261,26 @@ def ciencia_tasks():
 
     questions = [
         {
-            'question': "1) O autor considerado “pai” da sociologia, Augusto Comte, acreditava que a nova ciência das sociedades deveria igualar-se às demais ciências da natureza que se pautavam pelos fenômenos observáveis e mensuráveis para que assim fosse possível apreender as regras gerais que regem o mundo social do indivíduo. Essa perspectiva ideológica é chamada de:",
-            'answers': [
-            { 'text': "a) Iluminismo", 'correct': False },
-            { 'text': "b) Darwinismo", 'correct': False },
-            { 'text': "c) Dadaísmo", 'correct': False },
-            { 'text': "d) Positivismo", 'correct': True },
+            'question': "Como é chamada a propriedade de atrair materiais? ",
+            'options': [
+            { 'text': "a) Condução", 'alternative': "a" },
+            { 'text': "b) Isopropílico", 'alternative': "b" },
+            { 'text': "c) Isolante", 'alternative': "c" },
+            { 'text': "d) Magnetismo", 'alternative': "d" }, 
             ],
-        },
-        {
-            'question': "2) Desse modo, assinale, das alternativas abaixo, a obra que representa, no expediente de Durkheim, o nascimento da sociologia como ciência a partir da definição do fato social.",
-            'answers': [
-            { 'text': "a) As Regras do Método Sociológico", 'correct': False },
-            { 'text': "b) A divisão do Trabalho social ", 'correct': True },
-            { 'text': "c) Sociologia", 'correct': False },
-            { 'text': "d) Educação e Moral", 'correct': False },
-            ],
-        },
-        {
-            'question': "3) Para onde a bússola aponta?",
-            'answers': [
-            { 'text': "a) Norte", 'correct': True },
-            { 'text': "b) Sul ", 'correct': False },
-            { 'text': "c) Leste", 'correct': False },
-            { 'text': "d) Oeste", 'correct': False },
-            
-            ],
-        },
-        {
-            'question': "4) Como é chamada a propriedade de atrair materiais? ",
-            'answers': [
-            { 'text': "a) Condução", 'correct': False },
-            { 'text': "b) Isopropílico", 'correct': False },
-            { 'text': "c) Isolante", 'correct': False },
-            { 'text': "d) Magnetismo", 'correct': True }, 
-            ],
-        },
-        {
-            'question': "5) O que acontece quando aproximamos os polos iguais de cada imã?",
-            'answers': [
-            { 'text': "a) Se Repelem", 'correct': True },
-            { 'text': "b) Se atraí ", 'correct': False },
-            { 'text': "c) Se chocam", 'correct': False },
-            { 'text': "d) Colide", 'correct': False },
-            
-            ],
-        },]
+            'answer': 'd'
+        }
+    ]
 
-    return render_template("ciencia_tasks.html", questions = questions)
+    if request.method == "GET":
+        return render_template("ciencia_tasks.html", questions = questions)
+    else:
+        if request.form["questions"] == questions[0]["answer"]:
+            flash("Parabéns! Resposta correta", 'green')
+            return render_template("ciencia_tasks.html", questions = questions)
+        else:
+            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("ciencia_tasks.html", questions = questions)
 
 
 @app.route('/ciencia-videos', methods =["POST", "GET"])
@@ -365,25 +303,26 @@ def artes_tasks():
 
     questions = [
         {
-            'question': "1) Marque a opção que não pode ser identificada como  uma obra de arte em nosso dia-a-dia:",
-            'answers': [
-            { 'text': "a) Cadeira - móveis", 'correct': False },
-            { 'text': "b) Igreja - construções", 'correct': False },
-            { 'text': "c) Árvore – natureza", 'correct': False },
-            { 'text': "d) Nenhuma das alternativas acima", 'correct': True },
+            'question': "Qual foi o Ápice do fama de Tarsila do Amaral",
+            'options': [
+            { 'text': "Opea de arame", 'alternative': "a" },
+            { 'text': "Semana de arte moderna de 22", 'alternative': "b" },
+            { 'text': "Crítica feita por Monteiro Lobato", 'alternative': "c" },
+            { 'text': "Sua ida a França", 'alternative': "d" },
             ],
-        },
-        {
-            'question': "2) Qual foi o Ápice do fama de Tarsila do Amaral",
-            'answers': [
-            { 'text': "Opea de arame", 'correct': False },
-            { 'text': "Semana de arte moderna de 22", 'correct': True },
-            { 'text': "Crítica feita por Monteiro Lobato", 'correct': False },
-            { 'text': "Sua ida a França", 'correct': False },
-            ],
+            'answer': "b"
         }]
-
-    return render_template("artes_tasks.html", questions = questions)
+    
+    if request.method == "GET":
+        return render_template("artes_tasks.html", questions = questions)
+    else:
+        if request.form["questions"] == questions[0]["answer"]:
+            flash("Parabéns! Resposta correta", 'green')
+            return render_template("artes_tasks.html", questions = questions)
+        else:
+            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("artes_tasks.html", questions = questions)
+                
 
 @app.route('/artes-videos', methods =["POST", "GET"])
 def artes_videos():

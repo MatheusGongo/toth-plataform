@@ -1,0 +1,66 @@
+[x-cloak] {
+    display: none;
+}
+
+[type="checkbox"] {
+    box-sizing: border-box;
+    padding: 0;
+}
+
+/* 
+
+Autor: MATHEUS GONGO DE SOUZA 
+
+Descrição: 
+
+Arquivo CSS para organização de estilização do projeto, seguindo normas de tipografia, 
+níveis de cores, padrões de margens, tamanhos e comportamentos de estilos.
+
+*/
+
+
+
+/* ESTILIZAÇÃO DE TAGS PARA NORMALIZAÇÃO */
+
+body{
+    font-family: 'Poppins', sans-serif;
+    margin: auto;
+    width: 100%;
+}
+
+
+.bg-cream {
+    background-color: #FFF2E1;
+}
+
+.bg-yellow-500 {
+    background-color: #F48C06;
+}
+.text-yellow-500 {
+    color: #F48C06;
+}
+.floating { 
+    animation-name: floating; 
+    animation-duration: 3s; 
+    animation-iteration-count: infinite; 
+    animation-timing-function: ease-in-out;
+} 
+@keyframes floating { 
+    0% { transform: translate(0, 0px); } 
+    50% { transform: translate(0, 8px); } 
+    100% { transform: translate(0, -0px); }  
+} 
+.floating-4 { 
+    animation-name: floating; 
+    animation-duration: 4s; 
+    animation-iteration-count: infinite; 
+    animation-timing-function: ease-in-out;
+} 
+@keyframes floating-4 { 
+    0% { transform: translate(0, 0px); } 
+    50% { transform: translate(0, 8px); } 
+    100% { transform: translate(0, -0px); }  
+}
+.text-darken {
+    color: #2F327D;
+}

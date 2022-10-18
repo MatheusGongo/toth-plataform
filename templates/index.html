@@ -1,26 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Thoth</title>
-	<!-- Tailwind -->
-	<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-	<!-- Alpine -->
-	<script type="module" src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"></script>
-	<script nomodule src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js" defer></script>
-	<!-- AOS -->
-	<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-	<!-- Custom style -->
-	<link rel="stylesheet" href="css/app.css" />
-	<!-- Poppins font -->
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"> 
-	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
-</head>
-<body class="antialiased">
+{% from '_mycomponents.html' import navBarComponent, footerComponent, tableComponent, headComponent %}
 
-	{% from '_mycomponents.html' import navBarComponent, footerComponent, tableComponent %}
+{{headComponent()}}
+
+<body class="antialiased">
 
 	{{navBarComponent('text')}}
 
@@ -91,7 +75,7 @@
 					<div class="absolute bg-black bg-opacity-20 bottom-0 left-0 right-0 w-full h-full rounded-2xl">
 						<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
 							<h1 class="uppercase text-white font-bold text-center text-sm lg:text-xl mb-3">PARA ESTUDANTES</h1>
-							<button class="rounded-full text-white text-xs lg:text-md px-6 py-3 w-full font-medium focus:outline-none transform transition hover:scale-110 duration-300 ease-in-out" style="background: rgba(35, 189, 238, 0.9)"><a href="login.html">Acesse como Aluno</a></button>
+							<button class="rounded-full text-white text-xs lg:text-md px-6 py-3 w-full font-medium focus:outline-none transform transition hover:scale-110 duration-300 ease-in-out" style="background: rgba(35, 189, 238, 0.9)"><a href="/login">Acesse como Aluno</a></button>
 						</div>
 					</div>
 				</div>

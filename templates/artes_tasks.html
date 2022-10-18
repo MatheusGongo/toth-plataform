@@ -195,9 +195,20 @@
             </header>
             <!-- Main content -->
             <main class="flex-1 max-h-full p-5 overflow-hidden overflow-y-scroll">
-                <div class="container mx-auto grid grid-cols-2 pt-6 gap-8">
+                <div class="container mx-auto grid grid-cols-1 pt-6 gap-8">
                     <div class="grid grid-cols-1">
-
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="flex bg-{{category}}-100 rounded-lg p-4 mb-4 text-sm text-{{category}}-700" role="alert">
+                                        <svg class="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                                        <div>
+                                            <span class="font-medium">{{ message }}!</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
                         <div class="mt-2">
                             <nav class="flex flex-col sm:flex-row">
                                 <a class="text-gray-600 py-4 px-6 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
@@ -208,21 +219,26 @@
                                 </a>
                             </nav>
                             <h3 class="mt-6 text-xl font-bold mb-10">Questões de Artes</h3>
-                            {% for question in questions %}
-                                <div class="grid grid-cols-1 shadow border rounded-ms px-5 py-6 w-full mb-6">
-                                    <div class="font-medium mb-6">
-                                        {{question.question}}  
-                                    </div>
-                                    <div class="grid grid-cols-1">
-                                        {% for answer in question.answers %}
-                                            <div class="font-normal">
-                                                {{answer.text}}  
-                                            </div> 
-                                        {% endfor %}  
-                                    </div>
-                                    <input type="text" class="border border-gray-200 mt-4 w-20 px-2" value=""/>
-                                </div>
-                            {% endfor %}
+                                <form name="form" method="POST" action="/artes-tasks" />
+                                    {% for question in questions %}
+                                        <div class="grid grid-cols-1 shadow border rounded-ms px-5 py-6 w-full mb-6">
+                                            <div class="font-medium mb-6">
+                                                {{question.question}}  
+                                            </div>
+                                            <div class="grid grid-cols-1">
+                                                {% for option in question.options %}
+                                                    <div class="flex mb-4">
+                                                        <input id="country-option-{{option.alternative}}" type="radio" name="questions" value="{{option.alternative}}" class="h-4 w-4 border-gray-300 focus:ring-2 focus:ring-blue-300" aria-labelledby="country-option-{{option.alternative}}" aria-describedby="country-option-{{option.alternative}} ">
+                                                        <label for="country-option-{{option.alternative}}" class="text-sm font-normal text-gray-900 ml-4 block">
+                                                            {{option.text}} 
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}  
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                    <button type="submit" class="px-4 py-2 bg-blue-500 outline-none rounded text-white shadow-blue-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-blue-600 focus:bg-blue-600 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"> Responder </button>
+                                </form>
                         </div>
                         
 
