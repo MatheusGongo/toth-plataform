@@ -14,6 +14,8 @@ function getData() {
             password_confirm: "",
 
         },
+        openToast: false,
+        success: false,
         open: false,
         user_name: "",
         login_email: "",

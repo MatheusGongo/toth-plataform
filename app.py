@@ -51,7 +51,6 @@ class User(db.Model, UserMixin):
     def verify_password(self, pwd):
         return check_password_hash(self.password, pwd)
     
-    
 class Questions(db.Model):
     id_question = db.Column(db.Integer, primary_key=True) 
     question = db.Column(db.String(500), nullable=False)
@@ -62,13 +61,14 @@ class Questions(db.Model):
     answer = db.Column(db.String(500), nullable=False)
     category = db.Column(db.String(50), nullable=False)
     
-    def __init__(self, question, option_a, option_b, option_c, option_d, answer):
+    def __init__(self, question, option_a, option_b, option_c, option_d, answer, category):
         self.question = question
         self.option_a = option_a
         self.option_b = option_b
         self.option_c = option_c
         self.option_d = option_d
         self.answer = answer
+        self.category = category
         
 
 @app.route('/register', methods=['POST'])
@@ -83,13 +83,14 @@ def create_user():
         user = User(first_name, last_name, cpf, postcode, email, password)
         db.session.add(user)
         db.session.commit()
-        
         return redirect(url_for('login'))
     
     return render_template('form_student.html')
 
 def get_all_questions():
-    return render_template('form_student.html')
+    questions = Questions.query.all()
+    
+    return questions
     
 
 @app.errorhandler(404)
@@ -107,7 +108,6 @@ def showMessage(error=None):
 def index():
     return render_template("index.html")
 
-
 @app.route("/new", methods=["POST", "GET"])
 def new():
     return render_template("form.html")
@@ -121,7 +121,6 @@ def login():
         user = User.query.filter_by(email=email).first()
         if user:
             login_user(user)
-            flash("Login realizado com sucesso!")
             return redirect(url_for("user"))
         else:
              flash("Usuário não encontrado")
@@ -132,14 +131,27 @@ def login():
 @app.route('/user', methods=['GET', 'POST'])  
 @login_required
 def user():
-    list_questions = get_all_questions()
-    return render_template("students.html", questions = list_questions) 
-  
+    artes_count = Questions.query.filter_by(category='artes').count()
+    matematica_count = Questions.query.filter_by(category='matematica').count()
+    literatura_count = Questions.query.filter_by(category='literatura').count()
+    ciencia_count = Questions.query.filter_by(category='ciencia').count()
+    
+    if  session.get("tasks_completed") == None:
+        session["tasks_completed"] = 0
+        tasks_completed = session["tasks_completed"]
+        return render_template("students.html", artes = artes_count, matematica = matematica_count, literatura = literatura_count, ciencia = ciencia_count, tasks_completed = tasks_completed) 
+
+    else:   
+        tasks_completed = session["tasks_completed"]
+        return render_template("students.html", artes = artes_count, matematica = matematica_count, literatura = literatura_count, ciencia = ciencia_count, tasks_completed = tasks_completed) 
+
+
 
 
 @app.route("/logout")
 def logout():
     logout_user()
+    session.clear()
     return redirect(url_for("login"))
 
 
@@ -183,16 +195,27 @@ def literatura_tasks():
         ],
         'answer': 'c'
     }]
-
+    
     if request.method == "GET":
-        return render_template("literatura_tasks.html", questions = questions)
+        if  session.get("alt_q_validade_literatura") == None and session.get("is_correct_literatura") == None:
+            return render_template("literatura_tasks.html", questions = questions)
+        else: 
+            alt_q_validade = session["alt_q_validade_literatura"]
+            is_correct = session["is_correct_literatura"]
+            return render_template("literatura_tasks.html", questions = questions, is_correct = is_correct, text = alt_q_validade)
     else:
         if request.form["questions"] == questions[0]["answer"]:
             flash("Parabéns! Resposta correta", 'green')
-            return render_template("literatura_tasks.html", questions = questions)
+            res = int(session["tasks_completed"]) + 1
+            session["tasks_completed"] = res
+            session["is_correct_literatura"] = True
+            session["alt_q_validade_literatura"] = questions[0]["answer"]
+            return render_template("literatura_tasks.html", questions = questions, is_correct = True, text = questions[0]["answer"])
         else:
-            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
-            return render_template("literatura_tasks.html", questions = questions)
+            session["is_correct_literatura"] = False
+            session["alt_q_validade_literatura"] = questions[0]["answer"]
+            flash("Resposta Errada! Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("literatura_tasks.html", questions = questions, is_correct = False, text = questions[0]["answer"])
         
         
         
@@ -226,16 +249,27 @@ def matematica_tasks():
             ],
             'answer': "d"
         }]
-
+    
     if request.method == "GET":
-        return render_template("matematica_tasks.html", questions = questions)
+        if  session.get("alt_q_validade_matematica") == None and session.get("is_correct_matematica") == None:
+            return render_template("matematica_tasks.html", questions = questions)
+        else: 
+            alt_q_validade = session["alt_q_validade_matematica"]
+            is_correct = session["is_correct_matematica"]
+            return render_template("matematica_tasks.html", questions = questions, is_correct = is_correct, text = alt_q_validade)
     else:
         if request.form["questions"] == questions[0]["answer"]:
             flash("Parabéns! Resposta correta", 'green')
-            return render_template("matematica_tasks.html", questions = questions)
+            res = int(session["tasks_completed"]) + 1
+            session["tasks_completed"] = res
+            session["is_correct_matematica"] = True
+            session["alt_q_validade_matematica"] = questions[0]["answer"]
+            return render_template("matematica_tasks.html", questions = questions, is_correct = True, text = questions[0]["answer"])
         else:
-            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
-            return render_template("matematica_tasks.html", questions = questions)
+            session["is_correct_matematica"] = False
+            session["alt_q_validade_matematica"] = questions[0]["answer"]
+            flash("Resposta Errada! Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("matematica_tasks.html", questions = questions, is_correct = False, text = questions[0]["answer"])
         
         
         
@@ -273,14 +307,25 @@ def ciencia_tasks():
     ]
 
     if request.method == "GET":
-        return render_template("ciencia_tasks.html", questions = questions)
+        if  session.get("alt_q_validade_ciencia") == None and session.get("is_correct_ciencia") == None:
+            return render_template("ciencia_tasks.html", questions = questions)
+        else: 
+            alt_q_validade = session["alt_q_validade_ciencia"]
+            is_correct = session["is_correct_ciencia"]
+            return render_template("ciencia_tasks.html", questions = questions, is_correct = is_correct, text = alt_q_validade)
     else:
         if request.form["questions"] == questions[0]["answer"]:
             flash("Parabéns! Resposta correta", 'green')
-            return render_template("ciencia_tasks.html", questions = questions)
+            res = int(session["tasks_completed"]) + 1
+            session["tasks_completed"] = res
+            session["is_correct_ciencia"] = True
+            session["alt_q_validade_ciencia"] = questions[0]["answer"]
+            return render_template("ciencia_tasks.html", questions = questions, is_correct = True, text = questions[0]["answer"])
         else:
-            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
-            return render_template("ciencia_tasks.html", questions = questions)
+            session["is_correct_ciencia"] = False
+            session["alt_q_validade_ciencia"] = questions[0]["answer"]
+            flash("Resposta Errada! Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("ciencia_tasks.html", questions = questions, is_correct = False, text = questions[0]["answer"])
 
 
 @app.route('/ciencia-videos', methods =["POST", "GET"])
@@ -311,17 +356,29 @@ def artes_tasks():
             { 'text': "Sua ida a França", 'alternative': "d" },
             ],
             'answer': "b"
-        }]
+        }
+    ]
     
     if request.method == "GET":
-        return render_template("artes_tasks.html", questions = questions)
+        if  session.get("alt_q_validade_artes") == None and session.get("is_correct_artes") == None:
+            return render_template("artes_tasks.html", questions = questions)
+        else: 
+            alt_q_validade = session["alt_q_validade_artes"]
+            is_correct = session["is_correct_artes"]
+            return render_template("artes_tasks.html", questions = questions, is_correct = is_correct, text = alt_q_validade)
     else:
         if request.form["questions"] == questions[0]["answer"]:
             flash("Parabéns! Resposta correta", 'green')
-            return render_template("artes_tasks.html", questions = questions)
+            res = int(session["tasks_completed"]) + 1
+            session["tasks_completed"] = res
+            session["is_correct_artes"] = True
+            session["alt_q_validade_artes"] = questions[0]["answer"]
+            return render_template("artes_tasks.html", questions = questions, is_correct = True, text = questions[0]["answer"])
         else:
-            flash("Resposta Errada! Tente responder corretamente. Caso precise, dê uma olhada nas vídeo aulas", 'red')
-            return render_template("artes_tasks.html", questions = questions)
+            session["is_correct_artes"] = False
+            session["alt_q_validade_artes"] = questions[0]["answer"]
+            flash("Resposta Errada! Caso precise, dê uma olhada nas vídeo aulas", 'red')
+            return render_template("artes_tasks.html", questions = questions, is_correct = False, text = questions[0]["answer"])
                 
 
 @app.route('/artes-videos', methods =["POST", "GET"])

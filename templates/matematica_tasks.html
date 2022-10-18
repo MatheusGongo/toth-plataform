@@ -112,32 +112,6 @@
                 </div>
                 </div>
 
-                <!-- Desktop search box -->
-                <div class="items-center hidden px-2 space-x-2 md:flex-1 md:flex md:mr-auto md:ml-5">
-                <!-- search icon -->
-                <span>
-                    <svg
-                    class="w-5 h-5 text-gray-500"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                    </svg>
-                </span>
-                <input
-                    type="text"
-                    placeholder="Search"
-                    class="px-4 py-3 rounded-md hover:bg-gray-100 lg:max-w-sm md:py-2 md:flex-1 focus:outline-none md:focus:bg-gray-100 md:focus:shadow md:focus:border"
-                />
-                </div>
-
                 <!-- Navbar right -->
                 <div class="relative flex items-center space-x-3">
                 <!-- Search button -->
@@ -182,8 +156,8 @@
                     class="absolute mt-3 transform -translate-x-full bg-white rounded-md shadow-lg min-w-max"
                     >
                     <div class="flex flex-col p-4 space-y-1 font-medium border-b">
-                        <span class="text-gray-800">{{user}}</span>
-                        <span class="text-sm text-gray-400">ahmed.kamel@example.com</span>
+                        <span class="text-gray-800">{{current_user.first_name}}</span>
+                        <span class="text-sm text-gray-400">{{current_user.email}}</span>
                     </div>
                     <div class="flex items-center justify-center p-4 text-blue-700 underline border-t">
                         <a href="/logout">Logout</a>
@@ -238,7 +212,15 @@
                                             </div>
                                         </div>
                                     {% endfor %}
-                                    <button type="submit" class="px-4 py-2 bg-blue-500 outline-none rounded text-white shadow-blue-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-blue-600 focus:bg-blue-600 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"> Responder </button>
+                                    {% if is_correct == True %}
+                                        <div class="font-semibold text-green-800 text-lg mb-4">Você acertou! Resposta correta: {{text}} </div>
+                                        <button type="submit" disabled class="px-4 py-2 bg-blue-500 outline-none rounded text-white shadow-blue-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-blue-600 focus:bg-blue-600 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"> Responder </button>
+                                    {% elif is_correct == False %}
+                                        <div class="font-semibold text-red-800 text-lg mb-4">Você errou! <p class="text-gray-800">Resposta correta: {{text}}</p></div>
+                                        <button type="submit" disabled class="px-4 py-2 bg-blue-500 outline-none rounded text-white shadow-blue-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-blue-600 focus:bg-blue-600 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"> Responder </button>
+                                    {% else %}
+                                        <button type="submit" class="px-4 py-2 bg-blue-500 outline-none rounded text-white shadow-blue-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-blue-600 focus:bg-blue-600 focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"> Responder </button>
+                                    {% endif %}                            
                                 </form>
                         </div>
                         
