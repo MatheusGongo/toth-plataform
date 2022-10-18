@@ -295,12 +295,12 @@ def ciencia_tasks():
 
     questions = [
         {
-            'question': "Como é chamada a propriedade de atrair materiais? ",
+            'question': "País insular rodeado por placas tectônicas? ",
             'options': [
-            { 'text': "a) Condução", 'alternative': "a" },
-            { 'text': "b) Isopropílico", 'alternative': "b" },
-            { 'text': "c) Isolante", 'alternative': "c" },
-            { 'text': "d) Magnetismo", 'alternative': "d" }, 
+            { 'text': "a) Brasil", 'alternative': "a" },
+            { 'text': "b) Eua", 'alternative': "b" },
+            { 'text': "c) Madagascar", 'alternative': "c" },
+            { 'text': "d) Japão", 'alternative': "d" }, 
             ],
             'answer': 'd'
         }
